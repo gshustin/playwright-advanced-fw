@@ -25,15 +25,17 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      # Здесь можно поменять окружение (dev/stage/prod)
+      # Можно выбрать окружение: dev / stage / prod
       - name: Run Playwright tests (DEV)
-        run: npm run test:dev
+        run: npm run test:dev -- --reporter=html
 
+      # Создание Allure-отчёта (только генерация, без запуска сервера)
       - name: Generate Allure report
         if: always()
         run: npm run allure:report
 
-      - name: Upload HTML report
+      # Сохраняем оба отчёта как артефакты
+      - name: Upload Playwright HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -51,16 +53,18 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     if: always()
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download report artifact
+      - name: Download Playwright report
         uses: actions/download-artifact@v4
         with:
           name: playwright-report
           path: playwright-report
 
+      # Публикуем отчёт на GitHub Pages
       - name: Deploy HTML report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
