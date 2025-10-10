@@ -9,10 +9,12 @@ async function globalTeardown() {
       stdio: 'inherit',
     });
 
-    // сразу открываем
-    execSync('npx allure open allure-report', {
-      stdio: 'inherit',
-    });
+    // не открываем отчёт автоматически на CI
+    if (process.env.CI !== 'true') {
+      execSync('npx allure open allure-report', { stdio: 'inherit' });
+    } else {
+      console.log('Skipping "allure open" — running in CI environment');
+    }
   } catch (error) {
     console.error('Failed to generate/open Allure report', error);
   }
