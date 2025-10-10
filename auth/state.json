@@ -1,0 +1,55 @@
+{
+  "cookies": [
+    {
+      "name": "optimizelySegments",
+      "value": "%7B%7D",
+      "domain": ".the-internet.herokuapp.com",
+      "path": "/",
+      "expires": 1794167281.776731,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "optimizelyEndUserId",
+      "value": "oeu1759607281777r0.2623260280487334",
+      "domain": ".the-internet.herokuapp.com",
+      "path": "/",
+      "expires": 1794167281.77801,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "optimizelyBuckets",
+      "value": "%7B%7D",
+      "domain": ".the-internet.herokuapp.com",
+      "path": "/",
+      "expires": 1794167281.778621,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "optimizelyPendingLogEvents",
+      "value": "%5B%22n%3Dengagement%26g%3D298283957%26u%3Doeu1759607281777r0.2623260280487334%26wxhr%3Dtrue%26t%3D1759607282253%26f%3D298349752%2C318188263%22%2C%22n%3Dhttps%253A%252F%252Fthe-internet.herokuapp.com%252Flogin%26u%3Doeu1759607281777r0.2623260280487334%26wxhr%3Dtrue%26t%3D1759607281779%26f%3D298349752%2C318188263%22%5D",
+      "domain": ".the-internet.herokuapp.com",
+      "path": "/",
+      "expires": 1759607297,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "rack.session",
+      "value": "BAh7CkkiD3Nlc3Npb25faWQGOgZFVEkiRTUyODZhMDUxZTI1NzE0NGRlNDgy%0ANzUyY2Y0ZGNlZTA2MDk4NzFmNGE1NTc5YWNlMzM5MWEyYmM0YmI0ZTA5YmIG%0AOwBGSSIJY3NyZgY7AEZJIiVlOTE0NTc1NTQ2OTZlMzUxNDRjZTU3Nzc1ODVk%0AOTEzNgY7AEZJIg10cmFja2luZwY7AEZ7B0kiFEhUVFBfVVNFUl9BR0VOVAY7%0AAFRJIi03N2U1YmE5YjBiM2JiOTA0YjY3ZTkyZWMyNDM1NmIyZTgxNjI1Mjhj%0ABjsARkkiGUhUVFBfQUNDRVBUX0xBTkdVQUdFBjsAVEkiLWRhMzlhM2VlNWU2%0AYjRiMGQzMjU1YmZlZjk1NjAxODkwYWZkODA3MDkGOwBGSSIKZmxhc2gGOwBG%0AewBJIg11c2VybmFtZQY7AEZJIg10b21zbWl0aAY7AFQ%3D%0A--e43222c266cfeaf125e91696ae4328c64ceb8ea4",
+      "domain": "the-internet.herokuapp.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}
