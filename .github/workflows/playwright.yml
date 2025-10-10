@@ -36,17 +36,14 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests (DEV)
-        run: npm run test:dev
-        continue-on-error: true  # workflow не упадёт, даже если тесты упадут
+        run: npx cross-env TEST_ENV=dev npx playwright test --reporter=list,allure-playwright
+        continue-on-error: true
 
       - name: Generate Allure report
         if: always()
         run: |
-          if [ -d "allure-results" ]; then
-            npx allure generate allure-results --clean -o allure-report
-          else
-            echo "⚠️ No allure-results found, skipping report generation"
-          fi
+          mkdir -p allure-results
+          npx allure generate allure-results --clean -o allure-report || echo "No allure-results found"
 
       - name: Upload Allure report artifact
         if: always()
@@ -63,7 +60,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download Allure report artifact
+      - name: Download report artifact
         uses: actions/download-artifact@v4
         with:
           name: allure-report
