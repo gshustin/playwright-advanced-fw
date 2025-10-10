@@ -6,21 +6,18 @@ const cfg = loadEnv();
 export default defineConfig({
   timeout: 30_000,
   retries: 1,
+  outputDir: 'test-results', // ✅ ВОТ СЮДА, на верхний уровень
   reporter: [
     ['list'],
     ['html', { open: 'never', outputFolder: 'playwright-report' }],
-    ['allure-playwright']
+    ['allure-playwright', { outputFolder: 'allure-results' }]
   ],
   use: {
     baseURL: cfg.BASE_URL,
-    headless: false,
+    headless: true,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    trace: 'retain-on-failure',
-
-    // Если хочешь запускать тесты с уже сохранённым логином —
-    // раскомментируй строку ниже
-    // storageState: 'auth/state.json'
+    trace: 'retain-on-failure'
   },
   projects: [
     {
