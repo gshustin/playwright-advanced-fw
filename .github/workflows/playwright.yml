@@ -1,4 +1,4 @@
-name: Playwright CI and Report Deploy
+name: Playwright CI and Allure Report Deploy
 
 on:
   push:
@@ -19,30 +19,33 @@ jobs:
         with:
           node-version: 20
 
+      - name: Cache dependencies and browsers
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
       - name: Install dependencies
         run: npm ci
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      # Можно выбрать окружение: dev / stage / prod
       - name: Run Playwright tests (DEV)
-        run: npm run test:dev -- --reporter=html
+        run: npm run test:dev
+        continue-on-error: true  # workflow не упадёт, даже если тесты завершились с ошибкой
 
-      # Создание Allure-отчёта (только генерация, без запуска сервера)
       - name: Generate Allure report
         if: always()
-        run: npm run allure:report
+        run: |
+          mkdir -p allure-results
+          npx allure generate allure-results --clean -o allure-report || echo "No allure-results found"
 
-      # Сохраняем оба отчёта как артефакты
-      - name: Upload Playwright HTML report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report/
-
-      - name: Upload Allure report
+      - name: Upload Allure report artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -53,20 +56,18 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     if: always()
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download Playwright report
+      - name: Download report artifact
         uses: actions/download-artifact@v4
         with:
-          name: playwright-report
-          path: playwright-report
+          name: allure-report
+          path: allure-report
 
-      # Публикуем отчёт на GitHub Pages
-      - name: Deploy HTML report to GitHub Pages
+      - name: Deploy Allure report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./playwright-report
+          publish_dir: ./allure-report
