@@ -21,12 +21,21 @@ pipeline {
 
     stage('Run tests') {
       steps {
-        sh 'npx playwright test --output=playwright-report'
+        sh '''
+          # Гарантированно положим JUnit в файл, независимо от config.ts
+          mkdir -p test-results
+          PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml \
+          npx playwright test --reporter=junit,allure-playwright --output=playwright-report
+
+          echo "== ls test-results ==" && ls -lah test-results || true
+          echo "== ls allure-results ==" && ls -lah allure-results || true
+        '''
       }
       post {
         always {
-          junit testResults: 'junit/results.xml', allowEmptyResults: false
-          archiveArtifacts artifacts: 'junit/*.xml, allure-results/**, playwright-report/**', allowEmptyArchive: true
+          // Берём JUnit там, где Playwright его создаёт по умолчанию с env-переменной
+          junit testResults: 'test-results/results.xml', allowEmptyResults: false
+          archiveArtifacts artifacts: 'test-results/results.xml, allure-results/**, playwright-report/**', allowEmptyArchive: true
         }
       }
     }
