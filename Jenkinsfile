@@ -6,13 +6,9 @@ pipeline {
   }
 
   stages {
-    stage('Checkout') {
-      steps { checkout scm }
-    }
+    stage('Checkout') { steps { checkout scm } }
 
-    stage('Java check') {
-      steps { sh 'java -version || true' }   // проверим, что JDK подхватился
-    }
+    stage('Java check') { steps { sh 'java -version || true' } }
 
     stage('Install dependencies') {
       steps {
@@ -25,13 +21,7 @@ pipeline {
 
     stage('Run tests') {
       steps {
-        sh '''
-          mkdir -p junit
-          npx playwright test \
-            --reporter=junit,allure-playwright \
-            --reporter-option outputFile=junit/results.xml \
-            --output=playwright-report
-        '''
+        sh 'npx playwright test --output=playwright-report'
       }
       post {
         always {
