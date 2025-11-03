@@ -4,6 +4,10 @@ pipeline {
     nodejs 'Node18'
     jdk 'temurin-17'
   }
+  environment {
+    CI = 'true'                // глобально говорим: это CI → teardown пропустит allure generate
+    ALLURE_GENERATE = 'false'  // можно поставить 'true', если когда-то захочешь генерить в CI
+  }
 
   stages {
     stage('Checkout') { steps { checkout scm } }
@@ -22,10 +26,7 @@ pipeline {
     stage('Run tests') {
       steps {
         sh '''
-          mkdir -p test-results
-          # теперь явно указываем путь к JUnit файлу
-          npx playwright test --reporter=junit --reporter=junit=./test-results/results.xml --reporter=allure-playwright --output=playwright-report
-
+          npx playwright test --output=playwright-report
           echo "== test-results ==" && ls -lah test-results || true
         '''
       }
