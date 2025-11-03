@@ -2,15 +2,17 @@ pipeline {
   agent any
   tools {
     nodejs 'Node18'
-    jdk 'temurin-17'     // ← обязательно: имя из Manage Jenkins → Tools
+    jdk 'temurin-17'
   }
-  options { timestamps(); ansiColor('xterm') }
 
   stages {
-    stage('Checkout') { steps { checkout scm } }
+    stage('Checkout') {
+      steps { checkout scm }
+    }
 
-    // чтобы явно увидеть, что Java есть
-    stage('Java check') { steps { sh 'java -version || true' } }
+    stage('Java check') {
+      steps { sh 'java -version || true' }   // проверим, что JDK подхватился
+    }
 
     stage('Install dependencies') {
       steps {
@@ -23,13 +25,11 @@ pipeline {
 
     stage('Run tests') {
       steps {
-        // пишем JUnit в файл + сохраняем allure-results; html-репорт остаётся как есть
         sh '''
           mkdir -p junit
           npx playwright test \
-            --reporter=junit \
+            --reporter=junit,allure-playwright \
             --reporter-option outputFile=junit/results.xml \
-            --reporter=allure-playwright \
             --output=playwright-report
         '''
       }
